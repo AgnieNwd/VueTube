@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# newAPI_YT
-=======
 # YouTube
 Etna_Youtube_Api
 
