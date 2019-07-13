@@ -1,0 +1,14 @@
+FROM        node:8
+
+WORKDIR     /home
+
+COPY        package*.json ./
+
+RUN     npm install
+
+EXPOSE  5005:5002
+EXPOSE  5005:5005
+EXPOSE  1080:1080
+EXPOSE  1025:102
+
+CMD     ["npm", "start"]

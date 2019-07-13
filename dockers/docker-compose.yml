@@ -1,0 +1,115 @@
+version: "3"
+
+services :
+  db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: t_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./sql/database.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSORD: pass
+      MYSQL_DATABASE: mydb
+    working_dir: /home
+    networks: 
+      - default
+      
+  rabbit : 
+    image: rabbitmq:3.7
+    container_name: t_rabbit
+    restart: always
+    ports:
+      - "8000:15672"
+    networks:
+      - default
+
+  api:
+    build:
+      context: ./python
+      dockerfile: Dockerfile_python
+    image: py_api:latest
+    container_name: t_python
+    restart: always
+    depends_on: 
+      - rabbit
+      - db
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python/:/home/
+    networks:
+      - default
+
+  encoder:
+    build:
+      context: ./encodocker
+      dockerfile: Dockerfile_encoder
+    image: encodocker:latest
+    container_name: t_encoder
+    restart: always
+    depends_on:
+      - rabbit
+      - api
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./encodocker/:/encoder/
+      - ./python/videos/:/home/videos/
+    networks:
+      - default
+    
+  web:
+    build:
+      context: ./vueker
+      dockerfile: Dockerfile_vue
+    image: nodocker:latest
+    container_name: t_node
+    depends_on:
+      - api
+    ports:
+      - "49160:8080"
+    volumes:
+      - ./vueker/:/user/src/app/
+    networks:
+      - default
+
+
+  mailer:
+    build:
+      context: ./mailer
+      dockerfile: Dockerfile_mailer
+    image: mailocker:latest 
+    container_name: t_mailer
+    depends_on:
+      - api
+    ports:
+      - "5005:5005"
+      - "5002:5005"
+      - "1080:1080"
+      - "1025:1025"
+    volumes:
+      - ./mailer/:/home
+    networks: 
+      - default
+
+  elastic:
+    build:
+      context: ./esdocker
+      dockerfile: Dockerfile_es
+    image: elasticker:latest
+    container_name: t_elastic
+    depends_on:
+      - api
+    ports:
+      - "5011:5011"
+    volumes:
+      - ./esdocker/:/home/
+    networks: 
+      - default
+
+networks:
+  default:

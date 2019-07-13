@@ -1,0 +1,7 @@
+ffmpeg-python
+flask
+connexion
+requests
+flask_restful
+flask_jsonpify
+pika
