@@ -1,0 +1,17 @@
+flask
+requests
+connexion
+flask_restful
+pymysql
+flask_jsonpify
+cryptography
+flask_jwt_extended
+Flask-SQLAlchemy
+flask-marshmallow 
+flask_httpauth
+marshmallow-sqlalchemy 
+marshmallow
+pyopenssl
+flask_cors
+pika
+ffmpeg-python

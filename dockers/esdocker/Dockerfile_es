@@ -1,0 +1,11 @@
+FROM        node:8
+
+WORKDIR     /home
+
+COPY        package*.json ./
+
+RUN     npm install
+
+EXPOSE  5011:5011
+
+CMD     ["npm", "start"]
