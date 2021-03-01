@@ -1,5 +1,6 @@
 # YouTube
-Etna_Youtube_Api
+5 services
+Technologies utilisées : API REST: python, FRONT: VueJS, ENCODING: python, ELASTICSEARCH: nodejs, MAILER: nodejs 
 
 # How to use this API
 ## Docker
